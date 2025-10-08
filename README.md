@@ -126,13 +126,6 @@ npm run dev
 
 ---
 
-## Contribuição
-
-Pull requests são bem-vindos!  
-Abra uma issue para discutir melhorias ou reportar bugs.
-
----
-
 ## Licença
 
 Este projeto está sob a licença MIT.
