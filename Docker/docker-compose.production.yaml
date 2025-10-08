@@ -1,0 +1,65 @@
+services:
+  backend:
+    build:
+      context: ../
+      dockerfile: Docker/Backend/Dockerfile
+    container_name: financemanager-backend
+    restart: always
+    ports:
+      - "5050:8080"
+    volumes:
+      - backend-logs:/app/Logs
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS:-http://+:8080}
+      - ConnectionStrings__DefaultConnection=Host=${DB_HOST:-db};Port=${DB_PORT:-5432};Database=${DB_NAME};Username=${DB_USER:-postgres};Password=${DB_PASSWORD}
+      - Jwt__Token=${JWT_SECRET_TOKEN}
+      - Jwt__Issuer=FinanceManager
+      - Jwt__Audience=FinanceManager
+    networks:
+      - finance-network
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ../
+      dockerfile: Docker/Frontend/Dockerfile
+    container_name: financemanager-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    networks:
+      - finance-network
+    depends_on:
+      - backend
+
+  db:
+    container_name: financemanager-db
+    image: postgres:17
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - finance-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
+    driver: local
+  backend-logs:
+    driver: local
+
+networks:
+  finance-network:
+    driver: bridge

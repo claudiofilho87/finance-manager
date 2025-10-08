@@ -1,0 +1,21 @@
+# Ignore environment files (except example)
+.env
+!.env.example
+
+# Docker build cache
+**/tmp/
+**/dist/
+**/node_modules/
+**/.next/
+**/.cache/
+
+# OS files
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+
+docker-compose.yaml
+
+nginx/nginx.conf
