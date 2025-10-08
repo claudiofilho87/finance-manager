@@ -1,59 +1,59 @@
 # Finance Manager
 
-Gerencie suas finanças pessoais de forma simples e eficiente!  
-Este projeto é composto por um backend em .NET, um frontend em React + Vite + TailwindCSS, e infraestrutura Docker para facilitar o desenvolvimento e o deploy.
+Manage your personal finances simply and efficiently!  
+This project consists of a .NET backend, a React + Vite + TailwindCSS frontend, and Docker infrastructure to facilitate development and deployment.
 
 ---
 
-## Estrutura do Projeto
+## Project Structure
 
 ```
 proj-finance-manager/
-├── Docker/           # Orquestração e infraestrutura (Docker, Nginx)
+├── Docker/           # Orchestration and infrastructure (Docker, Nginx)
 ├── FinanceManager/   # Backend (.NET 8, WebAPI)
 └── Frontend/         # Frontend (React, Vite, TailwindCSS)
 ```
 
 ---
 
-## Tecnologias Utilizadas
+## Technologies Used
 
 - **Frontend:** React, Vite, TypeScript, TailwindCSS
 - **Backend:** .NET 8, ASP.NET Core WebAPI, Entity Framework Core
-- **Infraestrutura:** Docker, Docker Compose, Nginx
+- **Infrastructure:** Docker, Docker Compose, Nginx
 
 ---
 
-## Como rodar localmente
+## How to Run Locally
 
-### Pré-requisitos
+### Prerequisites
 
 - [Docker](https://www.docker.com/)
-- [Node.js](https://nodejs.org/) (opcional, para rodar o frontend fora do Docker)
-- [.NET 8 SDK](https://dotnet.microsoft.com/download) (opcional, para rodar o backend fora do Docker)
+- [Node.js](https://nodejs.org/) (optional, to run the frontend outside Docker)
+- [.NET 8 SDK](https://dotnet.microsoft.com/download) (optional, to run the backend outside Docker)
 
-### 1. Configuração de variáveis de ambiente
+### 1. Environment Variables Setup
 
-Copie os arquivos de exemplo e ajuste conforme necessário:
+Copy the example files and adjust as needed:
 
 ```sh
 cp Docker/.env.example Docker/.env
 ```
 
-### 2. Subindo tudo com Docker
+### 2. Running Everything with Docker
 
-Na raiz do projeto, execute:
+From the project root, run:
 
 ```sh
 cd Docker
 docker compose up --build
 ```
 
-- O frontend estará disponível em: [http://localhost:3000](http://localhost:3000)
-- O backend estará disponível em: [http://localhost:5000](http://localhost:5000) (ou conforme configuração)
-- O Nginx pode ser usado como proxy reverso, conforme configurado.
+- The frontend will be available at: [http://localhost:3000](http://localhost:3000)
+- The backend will be available at: [http://localhost:5000](http://localhost:5000) (or as configured)
+- Nginx can be used as a reverse proxy, as configured.
 
-### 3. Rodando manualmente (sem Docker)
+### 3. Running Manually (without Docker)
 
 #### Backend
 
@@ -73,59 +73,59 @@ npm run dev
 
 ---
 
-## Estrutura das Pastas
+## Folder Structure
 
 ### Frontend
 
-- **src/pages/**: Páginas principais (Login, Dashboard, Register, etc)
-- **src/components/**: Componentes reutilizáveis (diálogos, UI, rotas protegidas)
-- **src/contexts/**: Contextos React (ex: autenticação)
-- **src/services/**: Serviços para comunicação com a API
-- **src/types/**: Tipos TypeScript compartilhados
-- **public/**: Arquivos estáticos
+- **src/pages/**: Main pages (Login, Dashboard, Register, etc)
+- **src/components/**: Reusable components (dialogs, UI, protected routes)
+- **src/contexts/**: React contexts (e.g., authentication)
+- **src/services/**: Services for API communication
+- **src/types/**: Shared TypeScript types
+- **public/**: Static files
 
 ### Backend (FinanceManager)
 
-- **Controllers/**: Controllers da API REST
+- **Controllers/**: REST API controllers
 - **DTOs/**: Data Transfer Objects
-- **Models/**: Modelos de dados e enums
-- **Services/**: Lógica de negócio e interfaces
-- **Data/**: Contexto do Entity Framework
-- **Migrations/**: Migrations do banco de dados
-- **Logs/**: Logs de execução
-- **Shared/**: Classes utilitárias e respostas padrão
+- **Models/**: Data models and enums
+- **Services/**: Business logic and interfaces
+- **Data/**: Entity Framework context
+- **Migrations/**: Database migrations
+- **Logs/**: Execution logs
+- **Shared/**: Utility classes and standard responses
 
 ### Docker
 
-- **docker-compose.yaml**: Orquestração dos serviços
-- **Backend/**: Dockerfile do backend
-- **Frontend/**: Dockerfile do frontend
-- **nginx/**: Configuração do Nginx
+- **docker-compose.yaml**: Service orchestration
+- **Backend/**: Backend Dockerfile
+- **Frontend/**: Frontend Dockerfile
+- **nginx/**: Nginx configuration
 
 ---
 
-## Scripts Úteis
+## Useful Scripts
 
 ### Frontend
 
-- `npm run dev` — inicia o servidor de desenvolvimento
-- `npm run build` — gera build de produção
+- `npm run dev` — starts the development server
+- `npm run build` — generates the production build
 
 ### Backend
 
-- `dotnet run` — inicia a API
-- `dotnet ef database update` — aplica migrations
+- `dotnet run` — starts the API
+- `dotnet ef database update` — applies migrations
 
 ---
 
-## Observações
+## Notes
 
-- Ajuste as variáveis de ambiente conforme seu ambiente de desenvolvimento.
-- O projeto utiliza autenticação JWT.
-- O frontend consome a API do backend via endpoints REST.
+- Adjust environment variables according to your development environment.
+- The project uses JWT authentication.
+- The frontend consumes the backend API via REST endpoints.
 
 ---
 
-## Licença
+## License
 
-Este projeto está sob a licença MIT.
+This project is licensed under the MIT License.
