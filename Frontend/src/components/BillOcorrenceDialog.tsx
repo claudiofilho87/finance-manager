@@ -52,9 +52,8 @@ const BillOcorrenceDialog = ({
 
 		const loadBill = async () => {
 			try {
-				const bills = await billService.getAll();
-				const found = bills.find((b) => b.name === ocorrence.bill);
-				if (found) setBill(found);
+				const bill = await billService.getById(ocorrence.billId);
+				setBill(bill);
 			} catch (error) {
 				console.error("Erro ao carregar conta da ocorrência:", error);
 			}
@@ -101,14 +100,16 @@ const BillOcorrenceDialog = ({
 						<div>
 							<label className="block text-sm font-medium mb-1">Conta</label>
 							<p className="text-muted-foreground">{bill?.name || "Carregando..."}</p>
-							<Button
-								variant="outline"
-								size="sm"
-								className="mt-2"
-								onClick={() => setBillDialogOpen(true)}
-							>
-								Editar Conta
-							</Button>
+							{bill?.isActive && (
+								<Button
+									variant="outline"
+									size="sm"
+									className="mt-2"
+									onClick={() => setBillDialogOpen(true)}
+								>
+									Editar Conta
+								</Button>
+							)}
 						</div>
 
 						<div>

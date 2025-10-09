@@ -43,6 +43,7 @@ export interface BillDto {
 	startDate: string; // YYYY-MM-DD
 	recurrenceTypeId: number;
 	repeatCount?: number;
+	isActive: boolean;
 }
 
 // BillCreateDto
@@ -67,6 +68,7 @@ export interface BillUpdateDto {
 export interface BillOcorrenceDto {
 	id: number;
 	bill: string;
+	billId: number;
 	date: string; // YYYY-MM-DD
 	status: number;
 	value?: number;

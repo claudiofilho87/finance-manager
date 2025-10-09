@@ -10,6 +10,7 @@ public class BillOcorrenceExpressions
     public static Expression<Func<BillOcorrence, BillOcorrenceDto>> ToDto = billOcorrence => new BillOcorrenceDto
     {
         Id = billOcorrence.Id,
+        BillId = billOcorrence.BillId,
         Bill = billOcorrence.Bill != null ?  billOcorrence.Bill.Name : string.Empty,
         Date = billOcorrence.Date,
         Status = billOcorrence.Status,

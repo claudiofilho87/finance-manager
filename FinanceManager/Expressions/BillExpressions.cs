@@ -14,6 +14,7 @@ public class BillExpressions
         Value = Math.Round(bill.ValueCents / 100m, 2),
         StartDate = bill.StartDate,
         RecurrenceTypeId = bill.RecurrenceTypeId,
-        RepeatCount = bill.RepeatCount
+        RepeatCount = bill.RepeatCount,
+        IsActive = bill.IsActive
     };
 }
