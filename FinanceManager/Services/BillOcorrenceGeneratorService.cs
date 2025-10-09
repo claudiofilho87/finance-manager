@@ -64,6 +64,7 @@ public class BillOcorrenceGeneratorService : BackgroundService
                     BillId = bill.Id,
                     Date = newDate,
                     Status = BillStatus.Pending,
+                    ValueCents = bill.ValueCents,
                     CreatedAt = now,
                     UpdatedAt = now
                 });
