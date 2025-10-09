@@ -254,7 +254,13 @@ const Dashboard = () => {
 							<DollarSign className="h-4 w-4 text-muted-foreground" />
 						</CardHeader>
 						<CardContent>
-							<div className="text-2xl font-bold">R$ {totalValue.toFixed(2)}</div>
+							<div className="text-2xl font-bold">
+								R${" "}
+								{totalValue.toLocaleString("pt-BR", {
+									minimumFractionDigits: 2,
+									maximumFractionDigits: 2,
+								})}
+							</div>
 						</CardContent>
 					</Card>
 					<Card>
@@ -264,7 +270,11 @@ const Dashboard = () => {
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold text-success">
-								R$ {paidValue.toFixed(2)}
+								R${" "}
+								{paidValue.toLocaleString("pt-BR", {
+									minimumFractionDigits: 2,
+									maximumFractionDigits: 2,
+								})}
 							</div>
 						</CardContent>
 					</Card>
@@ -275,7 +285,11 @@ const Dashboard = () => {
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold text-destructive">
-								R$ {pendingValue.toFixed(2)}
+								R${" "}
+								{pendingValue.toLocaleString("pt-BR", {
+									minimumFractionDigits: 2,
+									maximumFractionDigits: 2,
+								})}
 							</div>
 						</CardContent>
 					</Card>
@@ -331,7 +345,11 @@ const Dashboard = () => {
 											<div className="flex items-center gap-4">
 												<div className="text-right">
 													<p className="text-xl font-bold">
-														R$ {(occ.value ?? bill?.value ?? 0).toFixed(2)}
+														R${" "}
+														{(occ.value ?? bill?.value ?? 0).toLocaleString("pt-BR", {
+															minimumFractionDigits: 2,
+															maximumFractionDigits: 2,
+														})}
 													</p>
 													{paymentDate && (
 														<p className="text-xs text-muted-foreground">

@@ -43,13 +43,14 @@ const BillOcorrenceDialog = ({
 	const [billDialogOpen, setBillDialogOpen] = useState(false);
 
 	useEffect(() => {
-		const loadBill = async () => {
-			if (!ocorrence) return;
-			setDate(ocorrence.date);
-			setStatus(ocorrence.status);
-			setValue(ocorrence.value);
-			setObservation(ocorrence.observation || "");
+		if (!open || !ocorrence) return;
 
+		setDate(ocorrence.date);
+		setStatus(ocorrence.status);
+		setValue(ocorrence.value);
+		setObservation(ocorrence.observation || "");
+
+		const loadBill = async () => {
 			try {
 				const bills = await billService.getAll();
 				const found = bills.find((b) => b.name === ocorrence.bill);
@@ -60,7 +61,7 @@ const BillOcorrenceDialog = ({
 		};
 
 		loadBill();
-	}, [ocorrence]);
+	}, [open, ocorrence]);
 
 	const handleSave = async () => {
 		if (!ocorrence || !bill) return;
@@ -140,6 +141,7 @@ const BillOcorrenceDialog = ({
 								onChange={(e) =>
 									setValue(e.target.value ? parseFloat(e.target.value) : undefined)
 								}
+								placeholder="0,00"
 							/>
 						</div>
 

@@ -179,7 +179,7 @@ const BillDialog = ({ open, onOpenChange, bill, onSuccess }: BillDialogProps) =>
 									value: e.target.value ? parseFloat(e.target.value) : undefined,
 								})
 							}
-							placeholder="0.00"
+							placeholder="0,00"
 							disabled={loading}
 						/>
 					</div>
