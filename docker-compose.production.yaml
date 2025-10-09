@@ -56,10 +56,12 @@ services:
 
 volumes:
   postgres-data:
+    name: fm-postgres-data
     driver: local
   backend-logs:
+    name: fm-backend-logs
     driver: local
 
 networks:
   finance-network:
-    driver: bridge
+    driver: bridgec
