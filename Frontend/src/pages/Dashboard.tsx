@@ -119,6 +119,8 @@ const Dashboard = () => {
 				billId: bill.id,
 				date: occ.date,
 				status: newStatus,
+				value: occ.value,
+				observation: occ.observation,
 			};
 
 			await billOcorrenceService.update(occ.id, payload);
