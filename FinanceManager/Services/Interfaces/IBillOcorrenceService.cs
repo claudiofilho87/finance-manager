@@ -11,4 +11,6 @@ public interface IBillOcorrenceService
     public Task<BillOcorrenceDto?> UpdateAsync(long id, BillOcorrenceCreateDto dto, long userId);
     public Task<bool> DeleteAsync(long id, long userId);
     public Task CreateMultiplesAsync(Bill bill);
+    public Task UpdateMultiplesAsync(Bill bill, long oldValueCents);
+    public Task DeleteMultiplesAsync(Bill bill);
 }

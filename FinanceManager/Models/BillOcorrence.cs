@@ -20,6 +20,12 @@ public class BillOcorrence
     [Column("status")]
     public BillStatus Status { get; set; }
     
+    [Column("value_cents")]
+    public long ValueCents { get; set; }
+    
+    [Column("observation")]
+    public string? Observation { get; set; }
+    
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
     

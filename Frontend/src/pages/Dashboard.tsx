@@ -145,13 +145,12 @@ const Dashboard = () => {
 	});
 
 	const totalValue = monthFilteredOcorrences.reduce((sum, occ) => {
-		const bill = bills.find((b) => b.name === occ.bill);
-		return sum + (bill?.value || 0);
+		return sum + (occ.value ?? bills.find((b) => b.name === occ.bill)?.value ?? 0);
 	}, 0);
 
 	const paidValue = monthFilteredOcorrences.reduce((sum, occ) => {
-		const bill = bills.find((b) => b.name === occ.bill);
-		return sum + (occ.status === 1 ? bill?.value || 0 : 0);
+		const value = occ.value ?? bills.find((b) => b.name === occ.bill)?.value ?? 0;
+		return sum + (occ.status === 1 ? value : 0);
 	}, 0);
 
 	const pendingValue = totalValue - paidValue;
@@ -316,6 +315,11 @@ const Dashboard = () => {
 														{bill.description}
 													</p>
 												)}
+												{occ.observation && (
+													<p className="text-sm text-destructive">
+														Observação: {occ.observation}
+													</p>
+												)}
 												<p className="text-sm text-muted-foreground">
 													Vencimento:{" "}
 													{format(parseISO(occ.date), "dd/MM/yyyy", {
@@ -327,7 +331,7 @@ const Dashboard = () => {
 											<div className="flex items-center gap-4">
 												<div className="text-right">
 													<p className="text-xl font-bold">
-														R$ {bill?.value?.toFixed(2) || "0.00"}
+														R$ {(occ.value ?? bill?.value ?? 0).toFixed(2)}
 													</p>
 													{paymentDate && (
 														<p className="text-xs text-muted-foreground">

@@ -60,7 +60,7 @@ public class BillService : IBillService
         return BillExpressions.ToDto.Compile()(bill);
     }
 
-    public async Task<BillDto?> UpdateAsync(long id, BillCreateDto dto, long userId)
+    public async Task<BillDto?> UpdateAsync(long id, BillUpdateDto dto, long userId)
     {
         var bill = await _context.Bills
             .Include(bill => bill.RecurrenceType)
@@ -68,15 +68,14 @@ public class BillService : IBillService
 
         if (bill == null || bill.UserId != userId) return null;
 
+        var oldValueCents = bill.ValueCents;
         bill.Name = dto.Name;
         bill.Description = dto.Description;
         bill.ValueCents = dto.Value.HasValue ? (long)(dto.Value * 100) : 0;
-        bill.StartDate = dto.StartDate;
-        bill.RecurrenceTypeId = dto.RecurrenceTypeId;
-        bill.RepeatCount = dto.RepeatCount;
         bill.UpdatedAt = DateTime.UtcNow;
-
+        
         await _context.SaveChangesAsync();
+        await _billOcorrenceService.UpdateMultiplesAsync(bill, oldValueCents);
 
         return BillExpressions.ToDto.Compile()(bill);
     }
@@ -89,6 +88,21 @@ public class BillService : IBillService
         _context.Bills.Remove(bill);
         await _context.SaveChangesAsync();
 
+        return true;
+    }
+    
+    public async Task<bool> DeactivateAsync(long id, long userId)
+    {
+        var bill = await _context.Bills
+            .Include(bill => bill.BillOcorrences)
+            .FirstOrDefaultAsync(bill => bill.Id == id);
+        
+        if (bill == null || bill.UserId != userId) return false;
+
+        bill.IsActive = false;
+        await _billOcorrenceService.DeleteMultiplesAsync(bill);
+        await _context.SaveChangesAsync();
+        
         return true;
     }
 }

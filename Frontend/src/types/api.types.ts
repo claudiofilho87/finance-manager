@@ -39,7 +39,7 @@ export interface BillDto {
 	id: number;
 	name: string;
 	description?: string;
-	value?: number;
+	value: number;
 	startDate: string; // YYYY-MM-DD
 	recurrenceTypeId: number;
 	repeatCount?: number;
@@ -55,6 +55,13 @@ export interface BillCreateDto {
 	repeatCount?: number;
 }
 
+// BillUpdateDto
+export interface BillUpdateDto {
+	name: string;
+	description?: string;
+	value?: number;
+}
+
 // Bill Ocorrence
 
 export interface BillOcorrenceDto {
@@ -62,12 +69,16 @@ export interface BillOcorrenceDto {
 	bill: string;
 	date: string; // YYYY-MM-DD
 	status: number;
+	value?: number;
+	observation?: string;
 }
 
 export interface BillOcorrenceCreateDto {
 	billId: number;
 	date: string; // YYYY-MM-DD
 	status: number;
+	value?: number;
+	observation?: string;
 }
 
 // Recurrence Type

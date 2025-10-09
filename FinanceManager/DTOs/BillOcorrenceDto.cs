@@ -8,4 +8,6 @@ public class BillOcorrenceDto
     public string Bill { get; set; } = string.Empty;
     public DateOnly Date { get; set; }
     public BillStatus Status { get; set; }
+    public decimal Value { get; set; }
+    public string? Observation { get; set; }
 }

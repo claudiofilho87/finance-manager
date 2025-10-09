@@ -53,7 +53,7 @@ public class BillsController : AuthenticatedController
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<ApiResponse<BillDto>>> UpdateBill(long id, [FromBody] BillCreateDto dto)
+    public async Task<ActionResult<ApiResponse<BillDto>>> UpdateBill(long id, [FromBody] BillUpdateDto dto)
     {
         _logger.LogInformation("PUT /api/v1/bills/{BillId} - UserId: {UserId}", id, UserId);
 
@@ -80,6 +80,22 @@ public class BillsController : AuthenticatedController
 
         return isDeleted
             ? Ok(ApiResponse<string>.SuccessResponse("Bill deleted successfully"))
+            : NotFound(ApiResponse<string>.ErrorResponse("Bill not found"));
+    }
+
+    [HttpPatch("{id}/deactivate")]
+    public async Task<ActionResult<ApiResponse<string>>> DeactivateBill(long id)
+    {
+        _logger.LogInformation("DELETE /api/v1/bills/deactivate/{BillId} - UserId: {UserId}", id, UserId);
+        
+        var isDeactivated = await _billService.DeactivateAsync(id, UserId);
+        if (!isDeactivated)
+        {
+            _logger.LogWarning("Deactivate failed. Bill not found. BillId: {BillId}, UserId: {UserId}", id, UserId);
+        }
+
+        return isDeactivated
+            ? Ok(ApiResponse<string>.SuccessResponse("Bill deactivated successfully"))
             : NotFound(ApiResponse<string>.ErrorResponse("Bill not found"));
     }
 }

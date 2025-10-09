@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BillDto, BillCreateDto, RecurrenceTypeDto } from "@/types/api.types";
+import { BillDto, BillCreateDto, BillUpdateDto, RecurrenceTypeDto } from "@/types/api.types";
 import { billService } from "@/services/billService";
 import { recurrenceTypeService } from "@/services/recurrenceTypeService";
 import {
@@ -88,7 +88,12 @@ const BillDialog = ({ open, onOpenChange, bill, onSuccess }: BillDialogProps) =>
 		setLoading(true);
 		try {
 			if (bill) {
-				await billService.update(bill.id, formData);
+				const updatePayload: BillUpdateDto = {
+					name: formData.name,
+					description: formData.description,
+					value: formData.value,
+				};
+				await billService.update(bill.id, updatePayload);
 				toast.success("Conta atualizada com sucesso");
 			} else {
 				await billService.create(formData);
@@ -110,7 +115,7 @@ const BillDialog = ({ open, onOpenChange, bill, onSuccess }: BillDialogProps) =>
 
 		setLoading(true);
 		try {
-			await billService.delete(bill.id);
+			await billService.deactivate(bill.id);
 			toast.success("Conta removida com sucesso");
 			onSuccess();
 			onOpenChange(false);

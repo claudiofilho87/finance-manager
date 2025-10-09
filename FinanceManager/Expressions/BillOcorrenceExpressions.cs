@@ -12,6 +12,8 @@ public class BillOcorrenceExpressions
         Id = billOcorrence.Id,
         Bill = billOcorrence.Bill != null ?  billOcorrence.Bill.Name : string.Empty,
         Date = billOcorrence.Date,
-        Status = billOcorrence.Status
+        Status = billOcorrence.Status,
+        Value = Math.Round(billOcorrence.ValueCents / 100m, 2),
+        Observation = billOcorrence.Observation
     };
 }

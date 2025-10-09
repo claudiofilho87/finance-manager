@@ -11,4 +11,5 @@ public class BillDto
     public DateOnly StartDate { get; set; }
     public long RecurrenceTypeId { get; set; }
     public int? RepeatCount { get; set; }
+    public bool IsActive { get; set; } = true;
 }

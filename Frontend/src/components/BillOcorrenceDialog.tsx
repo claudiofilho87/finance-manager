@@ -1,8 +1,20 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+	Select,
+	SelectTrigger,
+	SelectValue,
+	SelectContent,
+	SelectItem,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { BillOcorrenceDto, BillOcorrenceCreateDto, BillDto } from "@/types/api.types";
 import { billService } from "@/services/billService";
@@ -16,10 +28,17 @@ interface BillOcorrenceDialogProps {
 	onSuccess: () => void;
 }
 
-const BillOcorrenceDialog = ({ open, onOpenChange, ocorrence, onSuccess }: BillOcorrenceDialogProps) => {
+const BillOcorrenceDialog = ({
+	open,
+	onOpenChange,
+	ocorrence,
+	onSuccess,
+}: BillOcorrenceDialogProps) => {
 	const [date, setDate] = useState("");
 	const [status, setStatus] = useState<number>(0);
 	const [bill, setBill] = useState<BillDto | undefined>();
+	const [value, setValue] = useState<number | undefined>();
+	const [observation, setObservation] = useState<string>("");
 	const [loading, setLoading] = useState(false);
 	const [billDialogOpen, setBillDialogOpen] = useState(false);
 
@@ -28,10 +47,12 @@ const BillOcorrenceDialog = ({ open, onOpenChange, ocorrence, onSuccess }: BillO
 			if (!ocorrence) return;
 			setDate(ocorrence.date);
 			setStatus(ocorrence.status);
+			setValue(ocorrence.value);
+			setObservation(ocorrence.observation || "");
 
 			try {
 				const bills = await billService.getAll();
-				const found = bills.find(b => b.name === ocorrence.bill);
+				const found = bills.find((b) => b.name === ocorrence.bill);
 				if (found) setBill(found);
 			} catch (error) {
 				console.error("Erro ao carregar conta da ocorrência:", error);
@@ -51,6 +72,8 @@ const BillOcorrenceDialog = ({ open, onOpenChange, ocorrence, onSuccess }: BillO
 				billId: bill.id,
 				date,
 				status,
+				value,
+				observation: observation.trim() || undefined,
 			};
 
 			await billOcorrenceService.update(ocorrence.id, payload);
@@ -89,16 +112,15 @@ const BillOcorrenceDialog = ({ open, onOpenChange, ocorrence, onSuccess }: BillO
 
 						<div>
 							<label className="block text-sm font-medium mb-1">Data</label>
-							<Input
-								type="date"
-								value={date}
-								onChange={(e) => setDate(e.target.value)}
-							/>
+							<Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
 						</div>
 
 						<div>
 							<label className="block text-sm font-medium mb-1">Status</label>
-							<Select value={status.toString()} onValueChange={(v) => setStatus(parseInt(v))}>
+							<Select
+								value={status.toString()}
+								onValueChange={(v) => setStatus(parseInt(v))}
+							>
 								<SelectTrigger className="w-full">
 									<SelectValue />
 								</SelectTrigger>
@@ -108,10 +130,35 @@ const BillOcorrenceDialog = ({ open, onOpenChange, ocorrence, onSuccess }: BillO
 								</SelectContent>
 							</Select>
 						</div>
+
+						<div>
+							<label className="block text-sm font-medium mb-1">Valor (R$)</label>
+							<Input
+								type="number"
+								step="0.01"
+								value={value ?? ""}
+								onChange={(e) =>
+									setValue(e.target.value ? parseFloat(e.target.value) : undefined)
+								}
+							/>
+						</div>
+
+						<div>
+							<label className="block text-sm font-medium mb-1">Observação</label>
+							<textarea
+								className="w-full border rounded-md p-2 text-sm"
+								value={observation}
+								onChange={(e) => setObservation(e.target.value)}
+								rows={3}
+								placeholder="Observações sobre o pagamento..."
+							/>
+						</div>
 					</div>
 
 					<DialogFooter className="mt-4 flex justify-end gap-2">
-						<Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
+						<Button variant="outline" onClick={() => onOpenChange(false)}>
+							Cancelar
+						</Button>
 						<Button onClick={handleSave} disabled={loading}>
 							{loading ? "Salvando..." : "Salvar"}
 						</Button>

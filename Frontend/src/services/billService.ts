@@ -1,5 +1,5 @@
 import api from './api';
-import { BillDto, BillCreateDto, ApiResponse } from '@/types/api.types';
+import { BillDto, BillCreateDto, ApiResponse, BillUpdateDto } from '@/types/api.types';
 
 export const billService = {
   async getAll(): Promise<BillDto[]> {
@@ -17,12 +17,16 @@ export const billService = {
     return response.data.data;
   },
 
-  async update(id: number, bill: BillCreateDto): Promise<BillDto> {
+  async update(id: number, bill: BillUpdateDto): Promise<BillDto> {
     const response = await api.put<ApiResponse<BillDto>>(`/api/v1/bills/${id}`, bill);
     return response.data.data;
   },
 
   async delete(id: number): Promise<void> {
     await api.delete(`/api/v1/bills/${id}`);
+  },
+
+  async deactivate(id: number): Promise<void> {
+    await api.patch(`/api/v1/bills/${id}/deactivate`);
   }
 };

@@ -34,6 +34,9 @@ public class Bill
     [Column("user_id")]
     public long UserId { get; set; }
     public User? User { get; set; }
+
+    [Column("is_active")] 
+    public bool IsActive { get; set; } = true;
     
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }

@@ -28,6 +28,7 @@ public class BillOcorrenceFactory : IBillOcorrenceFactory
                     _ => bill.StartDate.AddDays(i * bill.RecurrenceType.DaysInterval)
                 },
                 Status = BillStatus.Pending,
+                ValueCents = bill.ValueCents,
                 CreatedAt = now,
                 UpdatedAt = now
             });
