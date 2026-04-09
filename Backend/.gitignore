@@ -1,0 +1,28 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.DotSettings.user
+
+# Test results
+TestResults/
+coverage/
+
+# Publish output
+publish/
+*.nupkg
+
+# Env files
+.env
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
