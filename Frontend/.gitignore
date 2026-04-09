@@ -1,10 +1,9 @@
 # Node modules
 node_modules/
-bun.lockb
-
 # Build output
 dist/
 build/
+coverage/
 
 # Vite cache
 .vite/
