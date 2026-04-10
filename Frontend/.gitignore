@@ -16,6 +16,7 @@ yarn-error.log*
 # IDEs
 .idea/
 .vscode/
+.claude/
 
 # OS files
 .DS_Store

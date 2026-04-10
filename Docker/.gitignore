@@ -15,6 +15,7 @@
 # IDEs
 .idea/
 .vscode/
+.claude/
 
 docker-compose.yaml
 nginx/nginx.conf

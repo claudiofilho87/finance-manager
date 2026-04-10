@@ -20,6 +20,9 @@ publish/
 .env
 !.env.example
 
+# IDEs
+.claude/
+
 # OS files
 .DS_Store
 Thumbs.db
