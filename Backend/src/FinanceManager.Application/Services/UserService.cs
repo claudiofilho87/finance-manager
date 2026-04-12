@@ -80,7 +80,10 @@ public class UserService : IUserService
         if (user is null) return null;
 
         var tokenResponse = _tokenGenerator.CreateTokenResponse(user);
-        tokenResponse.RefreshToken = dto.RefreshToken;
+
+        user.RefreshToken = tokenResponse.RefreshToken;
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1);
+        await _userRepository.SaveChangesAsync();
 
         return tokenResponse;
     }
