@@ -21,11 +21,11 @@ public class BillOcorrenceRepository : IBillOcorrenceRepository
             .FirstOrDefaultAsync(bo => bo.Id == id && bo.Bill != null && bo.Bill.UserId == userId);
     }
 
-    public async Task<BillOcorrence?> GetByIdWithBillAsync(long id)
+    public async Task<BillOcorrence?> GetByIdWithBillAsync(long id, long userId)
     {
         return await _context.BillOcorrences
             .Include(bo => bo.Bill)
-            .FirstOrDefaultAsync(bo => bo.Id == id);
+            .FirstOrDefaultAsync(bo => bo.Id == id && bo.Bill != null && bo.Bill.UserId == userId);
     }
 
     public async Task<IEnumerable<BillOcorrence>> GetAllByUserIdAsync(long userId)

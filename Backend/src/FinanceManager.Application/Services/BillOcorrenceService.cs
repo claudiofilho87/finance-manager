@@ -65,7 +65,7 @@ public class BillOcorrenceService : IBillOcorrenceService
         var bill = await _billRepository.GetByIdAsync(dto.BillId, userId);
         if (bill == null) return null;
 
-        var billOcorrence = await _billOcorrenceRepository.GetByIdWithBillAsync(id);
+        var billOcorrence = await _billOcorrenceRepository.GetByIdWithBillAsync(id, userId);
         if (billOcorrence == null) return null;
 
         billOcorrence.BillId = dto.BillId;

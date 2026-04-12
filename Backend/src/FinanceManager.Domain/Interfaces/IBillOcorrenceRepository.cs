@@ -5,7 +5,7 @@ namespace FinanceManager.Domain.Interfaces;
 public interface IBillOcorrenceRepository
 {
     Task<BillOcorrence?> GetByIdAsync(long id, long userId);
-    Task<BillOcorrence?> GetByIdWithBillAsync(long id);
+    Task<BillOcorrence?> GetByIdWithBillAsync(long id, long userId);
     Task<IEnumerable<BillOcorrence>> GetAllByUserIdAsync(long userId);
     Task<DateOnly?> GetMaxDateByBillIdAsync(long billId);
     Task AddAsync(BillOcorrence billOcorrence);
