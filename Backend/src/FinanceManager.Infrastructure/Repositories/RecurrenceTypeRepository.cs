@@ -24,14 +24,5 @@ public class RecurrenceTypeRepository : IRecurrenceTypeRepository
         return await _context.RecurrenceTypes.ToListAsync();
     }
 
-    public async Task AddAsync(RecurrenceType recurrenceType)
-    {
-        await _context.RecurrenceTypes.AddAsync(recurrenceType);
-    }
-
-    public void Remove(RecurrenceType recurrenceType)
-    {
-        _context.RecurrenceTypes.Remove(recurrenceType);
-    }
 
 }
