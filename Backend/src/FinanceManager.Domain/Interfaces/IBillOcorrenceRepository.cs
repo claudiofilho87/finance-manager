@@ -14,5 +14,4 @@ public interface IBillOcorrenceRepository
     void RemoveRange(IEnumerable<BillOcorrence> billOcorrences);
     Task LoadBillAsync(BillOcorrence billOcorrence);
     Task UpdateValueCentsForPendingOccurrencesAsync(long billId, long newValueCents, long oldValueCents, DateOnly fromDate);
-    Task SaveChangesAsync();
 }

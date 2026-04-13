@@ -8,5 +8,4 @@ public interface IRecurrenceTypeRepository
     Task<IEnumerable<RecurrenceType>> GetAllAsync();
     Task AddAsync(RecurrenceType recurrenceType);
     void Remove(RecurrenceType recurrenceType);
-    Task SaveChangesAsync();
 }

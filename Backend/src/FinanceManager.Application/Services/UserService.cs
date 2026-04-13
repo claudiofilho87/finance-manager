@@ -10,12 +10,14 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IPasswordService _passwordService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserService(IUserRepository userRepository, IPasswordService passwordService, ITokenGenerator tokenGenerator)
+    public UserService(IUserRepository userRepository, IPasswordService passwordService, ITokenGenerator tokenGenerator, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _passwordService = passwordService;
         _tokenGenerator = tokenGenerator;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<UserDto>> GetAllAsync()
@@ -47,7 +49,7 @@ public class UserService : IUserService
         user.PasswordHash = _passwordService.HashPassword(user, dto.Password);
 
         await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
 
         return new UserDto
         {
@@ -69,7 +71,7 @@ public class UserService : IUserService
 
         user.RefreshToken = tokenResponse.RefreshToken;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1);
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
 
         return tokenResponse;
     }
@@ -83,7 +85,7 @@ public class UserService : IUserService
 
         user.RefreshToken = tokenResponse.RefreshToken;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1);
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
 
         return tokenResponse;
     }

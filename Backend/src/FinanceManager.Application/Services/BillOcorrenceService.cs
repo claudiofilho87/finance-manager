@@ -12,15 +12,18 @@ public class BillOcorrenceService : IBillOcorrenceService
     private readonly IBillOcorrenceRepository _billOcorrenceRepository;
     private readonly IBillRepository _billRepository;
     private readonly IBillOcorrenceFactory _billOcorrenceFactory;
+    private readonly IUnitOfWork _unitOfWork;
 
     public BillOcorrenceService(
         IBillOcorrenceRepository billOcorrenceRepository,
         IBillRepository billRepository,
-        IBillOcorrenceFactory billOcorrenceFactory)
+        IBillOcorrenceFactory billOcorrenceFactory,
+        IUnitOfWork unitOfWork)
     {
         _billOcorrenceRepository = billOcorrenceRepository;
         _billRepository = billRepository;
         _billOcorrenceFactory = billOcorrenceFactory;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<BillOcorrenceDto?> GetByIdAsync(long id, long userId)
@@ -54,7 +57,7 @@ public class BillOcorrenceService : IBillOcorrenceService
         };
 
         await _billOcorrenceRepository.AddAsync(billOcorrence);
-        await _billOcorrenceRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
         await _billOcorrenceRepository.LoadBillAsync(billOcorrence);
 
         return BillOcorrenceMappings.ToDto.Compile()(billOcorrence);
@@ -74,7 +77,7 @@ public class BillOcorrenceService : IBillOcorrenceService
         billOcorrence.ValueCents = dto.Value.HasValue ? (long)(dto.Value * 100) : 0;
         billOcorrence.Observation = dto.Observation;
 
-        await _billOcorrenceRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
 
         return BillOcorrenceMappings.ToDto.Compile()(billOcorrence);
     }
@@ -85,18 +88,17 @@ public class BillOcorrenceService : IBillOcorrenceService
         if (billOcorrence == null) return false;
 
         _billOcorrenceRepository.Remove(billOcorrence);
-        await _billOcorrenceRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
 
         return true;
     }
 
-    public async Task CreateMultiplesAsync(Bill bill)
+    public Task CreateMultiplesAsync(Bill bill)
     {
         var occurrences = _billOcorrenceFactory.Generate(bill).ToList();
-        if (!occurrences.Any()) return;
+        if (!occurrences.Any()) return Task.CompletedTask;
 
-        await _billOcorrenceRepository.AddRangeAsync(occurrences);
-        await _billOcorrenceRepository.SaveChangesAsync();
+        return _billOcorrenceRepository.AddRangeAsync(occurrences);
     }
 
     public async Task UpdateMultiplesAsync(Bill bill, long oldValueCents)
@@ -106,7 +108,7 @@ public class BillOcorrenceService : IBillOcorrenceService
             bill.Id, bill.ValueCents, oldValueCents, today);
     }
 
-    public async Task DeleteMultiplesAsync(Bill bill)
+    public Task DeleteMultiplesAsync(Bill bill)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -114,9 +116,9 @@ public class BillOcorrenceService : IBillOcorrenceService
             .Where(bo => bo.Date >= today)
             .ToList();
 
-        if (!occurrences.Any()) return;
+        if (!occurrences.Any()) return Task.CompletedTask;
 
         _billOcorrenceRepository.RemoveRange(occurrences);
-        await _billOcorrenceRepository.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 }

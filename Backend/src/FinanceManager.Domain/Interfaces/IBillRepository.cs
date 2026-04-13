@@ -12,5 +12,4 @@ public interface IBillRepository
     Task AddAsync(Bill bill);
     void Remove(Bill bill);
     Task LoadRecurrenceTypeAsync(Bill bill);
-    Task SaveChangesAsync();
 }

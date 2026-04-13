@@ -2,6 +2,7 @@ using FinanceManager.Application.DTOs;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Application.Mappings;
 using FinanceManager.Domain.Entities;
+using FinanceManager.Domain.Factories;
 using FinanceManager.Domain.Interfaces;
 
 namespace FinanceManager.Application.Services;
@@ -10,11 +11,19 @@ public class BillService : IBillService
 {
     private readonly IBillRepository _billRepository;
     private readonly IBillOcorrenceService _billOcorrenceService;
+    private readonly IBillOcorrenceFactory _billOcorrenceFactory;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public BillService(IBillRepository billRepository, IBillOcorrenceService billOcorrenceService)
+    public BillService(
+        IBillRepository billRepository,
+        IBillOcorrenceService billOcorrenceService,
+        IBillOcorrenceFactory billOcorrenceFactory,
+        IUnitOfWork unitOfWork)
     {
         _billRepository = billRepository;
         _billOcorrenceService = billOcorrenceService;
+        _billOcorrenceFactory = billOcorrenceFactory;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<BillDto?> GetByIdAsync(long id, long userId)
@@ -47,9 +56,11 @@ public class BillService : IBillService
         };
 
         await _billRepository.AddAsync(bill);
-        await _billRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
+
         await _billRepository.LoadRecurrenceTypeAsync(bill);
         await _billOcorrenceService.CreateMultiplesAsync(bill);
+        await _unitOfWork.CommitAsync();
 
         return BillMappings.ToDto.Compile()(bill);
     }
@@ -65,7 +76,7 @@ public class BillService : IBillService
         bill.ValueCents = dto.Value.HasValue ? (long)(dto.Value * 100) : 0;
         bill.UpdatedAt = DateTime.UtcNow;
 
-        await _billRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
         await _billOcorrenceService.UpdateMultiplesAsync(bill, oldValueCents);
 
         return BillMappings.ToDto.Compile()(bill);
@@ -77,7 +88,7 @@ public class BillService : IBillService
         if (bill == null) return false;
 
         _billRepository.Remove(bill);
-        await _billRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
 
         return true;
     }
@@ -89,7 +100,7 @@ public class BillService : IBillService
 
         bill.IsActive = false;
         await _billOcorrenceService.DeleteMultiplesAsync(bill);
-        await _billRepository.SaveChangesAsync();
+        await _unitOfWork.CommitAsync();
 
         return true;
     }

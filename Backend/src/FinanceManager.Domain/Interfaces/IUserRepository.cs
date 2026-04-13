@@ -9,5 +9,4 @@ public interface IUserRepository
     Task<IEnumerable<User>> GetAllAsync();
     Task<bool> ExistsByEmailAsync(string email);
     Task AddAsync(User user);
-    Task SaveChangesAsync();
 }

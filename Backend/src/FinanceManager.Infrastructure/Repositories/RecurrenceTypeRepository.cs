@@ -34,8 +34,4 @@ public class RecurrenceTypeRepository : IRecurrenceTypeRepository
         _context.RecurrenceTypes.Remove(recurrenceType);
     }
 
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
 }

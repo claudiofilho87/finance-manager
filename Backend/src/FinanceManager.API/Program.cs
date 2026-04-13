@@ -113,6 +113,7 @@ try
     builder.Services.AddScoped<IBillOcorrenceRepository, BillOcorrenceRepository>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IRecurrenceTypeRepository, RecurrenceTypeRepository>();
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
     builder.Services.AddScoped<IPasswordService, PasswordService>();
     builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
