@@ -18,4 +18,3 @@
 .claude/
 
 docker-compose.yaml
-nginx/nginx.conf
