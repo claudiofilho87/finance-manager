@@ -1,0 +1,70 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE: ghcr.io/claudiofilho87/proj-finance-manager-backend
+  FRONTEND_IMAGE: ghcr.io/claudiofilho87/proj-finance-manager-frontend
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Docker/Backend/Dockerfile
+          push: true
+          tags: ${{ env.BACKEND_IMAGE }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/claudiofilho87/proj-finance-manager
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Docker/Frontend/Dockerfile
+          push: true
+          tags: ${{ env.FRONTEND_IMAGE }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/claudiofilho87/proj-finance-manager
