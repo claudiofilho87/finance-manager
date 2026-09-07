@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/claudiofilho87/proj-finance-manager-backend:latest
+    image: ghcr.io/claudiofilho87/finance-manager-backend:latest
     container_name: financemanager-backend
     restart: always
     ports:
@@ -20,7 +20,7 @@ services:
       - db
 
   frontend:
-    image: ghcr.io/claudiofilho87/proj-finance-manager-frontend:latest
+    image: ghcr.io/claudiofilho87/finance-manager-frontend:latest
     container_name: financemanager-frontend
     restart: always
     ports:

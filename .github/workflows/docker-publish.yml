@@ -7,8 +7,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE: ghcr.io/claudiofilho87/proj-finance-manager-backend
-  FRONTEND_IMAGE: ghcr.io/claudiofilho87/proj-finance-manager-frontend
+  BACKEND_IMAGE: ghcr.io/claudiofilho87/finance-manager-backend
+  FRONTEND_IMAGE: ghcr.io/claudiofilho87/finance-manager-frontend
 
 jobs:
   build-backend:
@@ -38,7 +38,7 @@ jobs:
           push: true
           tags: ${{ env.BACKEND_IMAGE }}:latest
           labels: |
-            org.opencontainers.image.source=https://github.com/claudiofilho87/proj-finance-manager
+            org.opencontainers.image.source=https://github.com/claudiofilho87/finance-manager
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -67,4 +67,4 @@ jobs:
           push: true
           tags: ${{ env.FRONTEND_IMAGE }}:latest
           labels: |
-            org.opencontainers.image.source=https://github.com/claudiofilho87/proj-finance-manager
+            org.opencontainers.image.source=https://github.com/claudiofilho87/finance-manager
