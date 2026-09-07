@@ -1,8 +1,6 @@
 services:
   backend:
-    build:
-      context: .
-      dockerfile: Docker/Backend/Dockerfile
+    image: ghcr.io/claudiofilho87/proj-finance-manager-backend:latest
     container_name: financemanager-backend
     restart: always
     ports:
@@ -22,9 +20,7 @@ services:
       - db
 
   frontend:
-    build:
-      context: .
-      dockerfile: Docker/Frontend/Dockerfile
+    image: ghcr.io/claudiofilho87/proj-finance-manager-frontend:latest
     container_name: financemanager-frontend
     restart: always
     ports:
@@ -64,4 +60,4 @@ volumes:
 
 networks:
   finance-network:
-    driver: bridgec
+    driver: bridge
