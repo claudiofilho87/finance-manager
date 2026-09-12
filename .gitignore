@@ -20,4 +20,7 @@ Thumbs.db
 .vscode/
 .claude/
 
+# Playwright MCP artifacts
+.playwright-mcp/
+
 docker-compose.yaml
