@@ -9,6 +9,7 @@ This project consists of a .NET 8 backend (Clean Architecture), a React + Vite +
 
 ```
 finance-manager/
+├── .github/workflows/    # CI/CD pipeline (GitHub Actions)
 ├── Backend/              # Backend (.NET 8, Clean Architecture)
 │   ├── src/
 │   │   ├── FinanceManager.API/            # Controllers, Middlewares, entry point
@@ -19,7 +20,7 @@ finance-manager/
 ├── Docker/               # Dockerfiles and Nginx config
 ├── Frontend/             # Frontend (React, Vite, TypeScript, TailwindCSS)
 ├── docker-compose.yaml            # Development environment
-└── docker-compose.production.yaml # Production environment
+└── docker-compose.production.yaml # Production environment (pulls images built by CI)
 ```
 
 ---
@@ -29,6 +30,7 @@ finance-manager/
 - **Frontend:** React 18, Vite, TypeScript, TailwindCSS, shadcn-ui
 - **Backend:** .NET 8, ASP.NET Core WebAPI, Entity Framework Core, PostgreSQL 17
 - **Infrastructure:** Docker, Docker Compose, Nginx
+- **CI/CD:** GitHub Actions, GitHub Container Registry (GHCR)
 - **Auth:** JWT with refresh token flow
 
 ---
@@ -77,6 +79,23 @@ cd Frontend
 bun install
 bun run dev
 ```
+
+---
+
+## CI/CD
+
+On every push to `main` (or manually via `workflow_dispatch`), [`.github/workflows/docker-publish.yml`](.github/workflows/docker-publish.yml) builds the backend and frontend Docker images and pushes them to the GitHub Container Registry:
+
+- `ghcr.io/claudiofilho87/finance-manager-backend:latest`
+- `ghcr.io/claudiofilho87/finance-manager-frontend:latest`
+
+`docker-compose.production.yaml` pulls these prebuilt images directly instead of building locally. To deploy:
+
+```sh
+docker compose -f docker-compose.production.yaml up -d
+```
+
+In production, the frontend container is exposed on port `80` (behind a Cloudflare proxy), and the backend on port `5050`.
 
 ---
 
